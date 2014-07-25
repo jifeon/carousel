@@ -3,21 +3,21 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carousel Test Page</title>
+    <title>Carousel Page</title>
 
     <link rel="stylesheet" href="css/vendor/normalize.css">
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/carousel.css">
 
     <script src="js/common.js"></script>
-    <script src="js/vendor/require.js" data-main="pages/CarouselPage" async></script>
+    <script src="js/vendor/require.js" data-main="pages/initCarouselPage" async></script>
 </head>
 <body> <!-- body content here -->
 
 <h1>Carousel Page</h1>
 
-<div class="carousel">
-    <a class="carousel__arrow-left" href="#">Move to left</a>
+<div class="carousel" tabindex="0">
+    <a class="carousel__arrow-left carousel__arrow" href="#" tabindex="-1">Move to the left</a>
     <div class="carousel__bounds">
         <ul class="carousel__items">
             <li class="carousel__item">Slide #1</li>
@@ -32,7 +32,7 @@
             <li class="carousel__item">Slide #10</li>
         </ul>
     </div>
-    <a class="carousel__arrow-right" href="#">Move to right</a>
+    <a class="carousel__arrow-right carousel__arrow" href="#" tabindex="-1">Move to the right</a>
 </div>
 
 </body>

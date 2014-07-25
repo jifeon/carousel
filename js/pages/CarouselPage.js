@@ -1,9 +1,9 @@
-require(['Backbone', 'lib/Carousel'], function (Backbone, Carousel) {
+define(['Backbone', 'lib/Carousel'], function (Backbone, Carousel) {
     /**
      * @class CarouselPage
      * @extends Backbone.View
      */
-    var CarouselPage = Backbone.View.extend(/**@lends CarouselPage*/{
+    return Backbone.View.extend(/**@lends CarouselPage*/{
         /**
          * @protected
          * @constructs
@@ -28,9 +28,5 @@ require(['Backbone', 'lib/Carousel'], function (Backbone, Carousel) {
                 el: el
             }));
         }
-    });
-
-    new CarouselPage({
-        el: document.body
     });
 });

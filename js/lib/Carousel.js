@@ -12,7 +12,8 @@ define(['Backbone'], function (Backbone) {
         events: function () {
             return {
                 'click .carousel__arrow-left': this._onLeftArrowClick,
-                'click .carousel__arrow-right': this._onRightArrowClick
+                'click .carousel__arrow-right': this._onRightArrowClick,
+                keydown: this._onKeyDown
             };
         },
 
@@ -51,6 +52,12 @@ define(['Backbone'], function (Backbone) {
              */
             this._itemsHolderWidth = 0;
 
+            /**
+             * @type {number}
+             * @private
+             */
+            this._animationTime = 200;
+
             this._initItems();
         },
 
@@ -58,13 +65,33 @@ define(['Backbone'], function (Backbone) {
          * @private
          */
         _initItems: function () {
-            var $items = this._$itemsHolder.find('.carousel__item'),
-                $clonedItems = $items.clone();
-            $clonedItems.appendTo(this._$itemsHolder);
-            this._$items = $items.add($clonedItems);
+            var $items = this._$items = this._$itemsHolder.find('.carousel__item');
             this._itemWidth = $items.outerWidth(true);
-            this._itemsHolderWidth = this._itemWidth * this._$items.length;
-            this._$itemsHolder.width(this._itemsHolderWidth);
+
+            var capacity = Math.ceil(this._width / this._itemWidth),
+                itemsCount = $items.length;
+            if (itemsCount === capacity) {
+                var $clonedItems = $items.clone();
+                $clonedItems.appendTo(this._$itemsHolder);
+                this._$items = $items.add($clonedItems);
+                itemsCount *= 2;
+            }
+            else if (itemsCount < capacity) {
+                this.$el.find('.carousel__arrow').hide();
+            }
+
+            this._itemsHolderWidth = this._itemWidth * itemsCount;
+            this._$itemsHolder
+                .width(this._itemsHolderWidth)
+                .css('left', 0);
+        },
+
+        /**
+         * @param {number} time
+         * @public
+         */
+        setAnimationTime: function (time) {
+            this._animationTime = time;
         },
 
         /**
@@ -83,6 +110,28 @@ define(['Backbone'], function (Backbone) {
         _onRightArrowClick: function (e) {
             e.preventDefault();
             this._move(1);
+        },
+
+        /**
+         * @param {Event} e
+         * @private
+         */
+        _onKeyDown: function (e) {
+            var direction;
+            switch (e.keyCode) {
+                case 37: // left
+                    direction = -1;
+                    break;
+
+                case 39: // right
+                    direction = 1;
+                    break;
+            }
+
+            if (direction) {
+                e.preventDefault();
+                this._move(direction);
+            }
         },
 
         /**
@@ -116,7 +165,7 @@ define(['Backbone'], function (Backbone) {
 
             this._$itemsHolder.animate({
                 left: '-=' + (direction * this._itemWidth)
-            });
+            }, this._animationTime);
         }
     });
 
